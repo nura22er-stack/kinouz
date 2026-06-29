@@ -1,19 +1,16 @@
 from functools import lru_cache
 from pathlib import Path
-from typing import Annotated
 
 from pydantic import Field, field_validator
-from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 ENV_FILE = Path(__file__).with_name(".env")
 
 
 class Settings(BaseSettings):
     bot_token: str = Field(alias="BOT_TOKEN")
-    admin_ids: Annotated[list[int], NoDecode] = Field(
-        default_factory=list, alias="ADMIN_IDS"
-    )
-    admin_usernames: Annotated[list[str], NoDecode] = Field(
+    admin_ids: list[int] = Field(default_factory=list, alias="ADMIN_IDS")
+    admin_usernames: list[str] = Field(
         default_factory=list, alias="ADMIN_USERNAMES"
     )
     database_url: str = Field(
