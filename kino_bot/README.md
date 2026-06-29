@@ -37,6 +37,7 @@ Render'da Background Worker yarating:
 
 - Build command: `pip install -r requirements.txt`
 - Start command: `python bot.py`
+- Python version: `3.11.11`
 
 Environment variables:
 
@@ -47,6 +48,7 @@ ADMIN_USERNAMES=MYesemin,ismoiljonov_2209
 DATABASE_URL=sqlite+aiosqlite:///kino_bot.db
 MAIN_CHANNEL_ID=-1001234567890
 LOG_FILE=bot.log
+PYTHON_VERSION=3.11.11
 ```
 
 `BOT_TOKEN` va boshqa maxfiy qiymatlarni GitHub'ga push qilmang, Render dashboard orqali kiriting.

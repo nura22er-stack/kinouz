@@ -17,3 +17,5 @@ services:
         sync: false
       - key: LOG_FILE
         value: bot.log
+      - key: PYTHON_VERSION
+        value: 3.11.11
