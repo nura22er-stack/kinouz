@@ -1,0 +1,8 @@
+aiogram==3.13.1
+SQLAlchemy==2.0.51
+aiosqlite==0.20.0
+greenlet==3.5.3
+alembic==1.13.3
+python-dotenv==1.0.1
+pydantic-settings==2.6.1
+APScheduler==3.10.4

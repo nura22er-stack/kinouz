@@ -1,0 +1,19 @@
+services:
+  - type: worker
+    name: kinouz-bot
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python bot.py
+    envVars:
+      - key: BOT_TOKEN
+        sync: false
+      - key: ADMIN_IDS
+        sync: false
+      - key: ADMIN_USERNAMES
+        value: MYesemin,ismoiljonov_2209
+      - key: DATABASE_URL
+        value: sqlite+aiosqlite:///kino_bot.db
+      - key: MAIN_CHANNEL_ID
+        sync: false
+      - key: LOG_FILE
+        value: bot.log
