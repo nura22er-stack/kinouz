@@ -1,5 +1,6 @@
 from collections.abc import AsyncGenerator
 
+from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 from kino_bot.config import settings
@@ -12,6 +13,13 @@ SessionLocal = async_sessionmaker(engine, expire_on_commit=False, class_=AsyncSe
 async def init_db() -> None:
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
+        if conn.dialect.name == "sqlite":
+            result = await conn.execute(text("PRAGMA table_info(movies)"))
+            columns = {row[1] for row in result}
+            if "poster_file_id" not in columns:
+                await conn.execute(
+                    text("ALTER TABLE movies ADD COLUMN poster_file_id VARCHAR(512)")
+                )
 
 
 async def close_db() -> None:

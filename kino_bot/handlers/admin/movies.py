@@ -19,6 +19,7 @@ from kino_bot.texts import (
     MOVIE_DELETED,
     SEND_CAPTION,
     SEND_DELETE_CODE,
+    SEND_PHOTO,
     SEND_TITLE,
     SEND_VIDEO,
     SKIP,
@@ -40,9 +41,24 @@ async def add_movie_start(callback: CallbackQuery, state) -> None:
         await callback.answer(ADMIN_DENIED, show_alert=True)
         return
     await callback.answer()
-    await state.set_state(AddMovie.waiting_video)
+    await state.set_state(AddMovie.waiting_photo)
     if callback.message:
-        await callback.message.answer(SEND_VIDEO)
+        await callback.message.answer(SEND_PHOTO)
+
+
+@router.message(AddMovie.waiting_photo, F.photo)
+async def add_movie_photo(message: Message, state) -> None:
+    if not await _admin(message.from_user.id if message.from_user else None):
+        await message.answer(ADMIN_DENIED)
+        return
+    await state.update_data(poster_file_id=message.photo[-1].file_id)
+    await state.set_state(AddMovie.waiting_video)
+    await message.answer(SEND_VIDEO)
+
+
+@router.message(AddMovie.waiting_photo)
+async def add_movie_photo_invalid(message: Message) -> None:
+    await message.answer(SEND_PHOTO)
 
 
 @router.message(AddMovie.waiting_video, F.video)
@@ -85,9 +101,11 @@ async def add_movie_caption(message: Message, bot: Bot, state) -> None:
         code = await make_unique_movie_code()
         channel_message_id = await post_movie_to_channel(
             bot=bot,
+            poster_file_id=data.get("poster_file_id"),
             file_id=data["file_id"],
             title=data["title"],
             code=code,
+            caption=caption,
         )
         await create_movie(
             code=code,
@@ -95,6 +113,7 @@ async def add_movie_caption(message: Message, bot: Bot, state) -> None:
             file_id=data["file_id"],
             caption=caption,
             added_by=message.from_user.id,
+            poster_file_id=data.get("poster_file_id"),
             channel_message_id=channel_message_id,
         )
         if channel_message_id:

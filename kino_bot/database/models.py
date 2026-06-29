@@ -25,6 +25,7 @@ class Movie(Base):
     id: Mapped[int] = mapped_column(primary_key=True)
     code: Mapped[str] = mapped_column(String(32), unique=True, index=True)
     title: Mapped[str] = mapped_column(String(255))
+    poster_file_id: Mapped[str] = mapped_column(String(512), nullable=True)
     file_id: Mapped[str] = mapped_column(String(512))
     caption: Mapped[str] = mapped_column(Text, nullable=True)
     channel_message_id: Mapped[int] = mapped_column(Integer, nullable=True)

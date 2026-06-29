@@ -17,12 +17,14 @@ async def create_movie(
     file_id: str,
     caption: str | None,
     added_by: int,
+    poster_file_id: str | None = None,
     channel_message_id: int | None = None,
 ) -> Movie:
     async with SessionLocal() as session:
         movie = Movie(
             code=code,
             title=title,
+            poster_file_id=poster_file_id,
             file_id=file_id,
             caption=caption,
             added_by=added_by,

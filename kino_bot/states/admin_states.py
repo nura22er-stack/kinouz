@@ -2,6 +2,7 @@ from aiogram.fsm.state import State, StatesGroup
 
 
 class AddMovie(StatesGroup):
+    waiting_photo = State()
     waiting_video = State()
     waiting_title = State()
     waiting_caption = State()
